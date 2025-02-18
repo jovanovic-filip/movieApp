@@ -1,0 +1,26 @@
+<resources>
+    <color name="primary">#6200EE</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#BB86FC</color>
+    <color name="on_primary_container">#3700B3</color>
+    <color name="secondary">#03DAC6</color>
+    <color name="on_secondary">#000000</color>
+    <color name="secondary_container">#018786</color>
+    <color name="on_secondary_container">#03DAC6</color>
+    <color name="error">#B00020</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="error_container">#CF6679</color>
+    <color name="on_error_container">#B00020</color>
+    <color name="background">#FFFFFF</color>
+    <color name="on_background">#000000</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="on_surface">#000000</color>
+    <color name="surface_variant">#F5F5F5</color>
+    <color name="on_surface_variant">#000000</color>
+    <color name="outline">#000000</color>
+    <color name="colorBackground">#F5F5F5</color>
+    <color name="purple_200">#BB86FC</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="black">#000000</color>
+    <color name="teal_200">#03DAC5</color>
+</resources>
