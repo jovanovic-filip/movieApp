@@ -1,8 +1,19 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
 }
+
+val apiKeyPropertiesFile = rootProject.file("tmdbapikey.properties")
+val apiKeyProperties = Properties()
+if (apiKeyPropertiesFile.exists()) {
+    apiKeyProperties.load(apiKeyPropertiesFile.inputStream())
+} else {
+    apiKeyProperties.setProperty("TMDB_API_KEY", "")
+}
+
 android {
     namespace = "com.civonavoj.movieapp"
     compileSdk = 35
@@ -15,6 +26,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_KEY", "\"${apiKeyProperties["TMDB_API_KEY"]}\"")
     }
 
     buildTypes {
@@ -26,15 +38,18 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
+
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
 }

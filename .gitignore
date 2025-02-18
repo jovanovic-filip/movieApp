@@ -48,3 +48,5 @@ gradle/wrapper/gradle-wrapper.properties
 # Kotlin specific files
 *.kotlin_metadata
 *.kotlin_module
+
+/tmdbapikey.properties
