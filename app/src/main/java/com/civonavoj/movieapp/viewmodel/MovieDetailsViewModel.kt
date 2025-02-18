@@ -8,19 +8,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MovieDetailsViewModel : ViewModel() {
+open class MovieDetailsViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow<DetailsUiState>(DetailsUiState.Loading)
     val uiState: StateFlow<DetailsUiState> = _uiState.asStateFlow()
 
-    fun getMovieDetails(movieId: Int) {
+    fun fetchMovieDetails(movieId: Int) {
         viewModelScope.launch {
             _uiState.emit(DetailsUiState.Loading)
             try {
                 RetrofitClient.api.getMovieDetails(movieId).let { response ->
                     when {
                         response.isSuccessful -> response.body()?.let { item ->
-                            DetailsUiState.Success(item.mapToMovieItem())
+                            DetailsUiState.Success(item.mapToMovieDetails())
                         } ?: DetailsUiState.Failed(ApiError.EmptyResponse())
                         else -> DetailsUiState.Failed(ApiError.Network(response.code(), response.message()))
                     }

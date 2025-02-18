@@ -21,7 +21,7 @@ class MovieListViewModel : ViewModel() {
             try {
                 when {
                     response.isSuccessful -> response.body()?.let { page ->
-                        MovieListUiState.Success(page.results.map { it.mapToMovieItem() })
+                        MovieListUiState.Success(page.results.map { it.mapToMovieDetails() })
                     } ?: MovieListUiState.Failed(
                         ApiError.EmptyResponse()
                     )
@@ -45,7 +45,4 @@ class MovieListViewModel : ViewModel() {
         handleApiResponse(RetrofitClient.api.searchMoviesByKeyword(keyword))
     }
 
-    fun clearSearchResults() = viewModelScope.launch {
-        _uiState.emit(MovieListUiState.Empty)
-    }
 }

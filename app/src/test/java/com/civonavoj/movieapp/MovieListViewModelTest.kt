@@ -6,7 +6,7 @@ import com.civonavoj.movieapp.api.MoviesListApiResponse
 import com.civonavoj.movieapp.api.RetrofitClient
 import com.civonavoj.movieapp.api.TmdbApi
 import com.civonavoj.movieapp.viewmodel.ApiError
-import com.civonavoj.movieapp.viewmodel.mapToMovieItem
+import com.civonavoj.movieapp.viewmodel.mapToMovieDetails
 import com.civonavoj.movieapp.viewmodel.MovieListUiState
 import com.civonavoj.movieapp.viewmodel.MovieListViewModel
 import io.mockk.coEvery
@@ -63,7 +63,7 @@ class MovieListViewModelTest {
             }
             viewModel.fetchPopularMovies()
             val successState = awaitItem() as MovieListUiState.Success
-            assert(successState.movies.containsAll(movies.map { it.mapToMovieItem() })) {
+            assert(successState.movies.containsAll(movies.map { it.mapToMovieDetails() })) {
                 "Expected movies list to match the mock data"
             }
         }

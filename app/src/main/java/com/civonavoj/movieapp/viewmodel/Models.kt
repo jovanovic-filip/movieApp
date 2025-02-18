@@ -2,19 +2,29 @@ package com.civonavoj.movieapp.viewmodel
 
 import com.civonavoj.movieapp.api.Movie
 
-data class MovieItem (
+data class MovieDetails(
     val id: Int,
     val title: String,
+    val releaseDate: String,
+    val posterUrl: String?,
     val rating: Double,
-    val imageUrl: String?
+    val overview: String,
+    val genres: List<String>,
+    val runtime: Int,
+    val language: String
 )
 
-fun Movie.mapToMovieItem(): MovieItem {
-    return MovieItem(
+fun Movie.mapToMovieDetails(): MovieDetails {
+    return MovieDetails(
         id = id,
         title = title ?: "",
+        releaseDate = releaseDate ?: "",
+        posterUrl = posterPath,
         rating = voteAverage ?: 0.0,
-        imageUrl = posterPath
+        overview = overview ?: "",
+        genres = emptyList(),
+        runtime = 0,
+        language = ""
     )
 }
 
@@ -26,13 +36,13 @@ sealed class ApiError {
 
 sealed class DetailsUiState {
     data object Loading : DetailsUiState()
-    data class Success(val movie: MovieItem) : DetailsUiState()
+    data class Success(val movie: MovieDetails) : DetailsUiState()
     data class Failed(val error: ApiError?) : DetailsUiState()
 }
 
 sealed class MovieListUiState {
     data object Empty : MovieListUiState()
     data object Loading : MovieListUiState()
-    data class Success(val movies: List<MovieItem>) : MovieListUiState()
+    data class Success(val movies: List<MovieDetails>) : MovieListUiState()
     data class Failed(val error: ApiError?) : MovieListUiState()
 }

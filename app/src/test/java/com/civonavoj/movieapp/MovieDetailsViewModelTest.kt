@@ -7,7 +7,7 @@ import com.civonavoj.movieapp.api.TmdbApi
 import com.civonavoj.movieapp.viewmodel.ApiError
 import com.civonavoj.movieapp.viewmodel.DetailsUiState
 import com.civonavoj.movieapp.viewmodel.MovieDetailsViewModel
-import com.civonavoj.movieapp.viewmodel.mapToMovieItem
+import com.civonavoj.movieapp.viewmodel.mapToMovieDetails
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +41,7 @@ class MovieDetailsViewModelTest {
     }
 
     @Test
-    fun getMovieDetails_success() = runTest {
+    fun fetchMovieDetails_success() = runTest {
         val movie = Movie(
             id = 1,
             title = "Test Movie",
@@ -57,22 +57,22 @@ class MovieDetailsViewModelTest {
             assert(awaitItem() is DetailsUiState.Loading) {
                 "Initial state should be Loading"
             }
-            viewModel.getMovieDetails(1)
+            viewModel.fetchMovieDetails(1)
             val successState = awaitItem() as DetailsUiState.Success
-            assert(successState.movie == movie.mapToMovieItem()) {
+            assert(successState.movie == movie.mapToMovieDetails()) {
                 "Expected movie details to match the mock data"
             }
         }
     }
 
     @Test
-    fun getMovieDetails_error() = runTest {
+    fun fetchMovieDetails_error() = runTest {
         coEvery { api.getMovieDetails(1) } throws Exception("Network error")
         viewModel.uiState.test {
             assert(awaitItem() is DetailsUiState.Loading) {
                 "Initial state should be Loading"
             }
-            viewModel.getMovieDetails(1)
+            viewModel.fetchMovieDetails(1)
             val failure = awaitItem() as DetailsUiState.Failed
             assert(failure.error is ApiError.Unknown) {
                 "Error message should match the exception message"

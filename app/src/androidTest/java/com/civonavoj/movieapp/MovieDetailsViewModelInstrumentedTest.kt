@@ -21,13 +21,13 @@ class MovieDetailsViewModelInstrumentedTest {
     }
 
     @Test
-    fun testGetMovieDetailsApiCall() = runBlocking {
+    fun testFetchMovieDetailsApiCall() = runBlocking {
         val states = mutableListOf<DetailsUiState>()
         val job = launch {
             viewModel.uiState.collect { state -> states.add(state) }
         }
 
-        viewModel.getMovieDetails(27205)
+        viewModel.fetchMovieDetails(27205)
         delay(1000)
         job.cancel()
 

@@ -27,6 +27,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_KEY", "\"${apiKeyProperties["TMDB_API_KEY"]}\"")
+        buildConfigField("String", "TMDB_IMAGE_BASE_URL", "\"https://image.tmdb.org/t/p/\"")
     }
 
     buildTypes {
@@ -70,6 +71,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui.tooling.preview.android)
+    implementation(libs.coil.compose)
 
     implementation(libs.material)
     implementation(libs.androidx.core.ktx)
