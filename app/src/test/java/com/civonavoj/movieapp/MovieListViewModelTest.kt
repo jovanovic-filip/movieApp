@@ -2,9 +2,13 @@ package com.civonavoj.movieapp
 
 import app.cash.turbine.test
 import com.civonavoj.movieapp.api.Movie
-import com.civonavoj.movieapp.api.MovieResponse
+import com.civonavoj.movieapp.api.MoviesListApiResponse
 import com.civonavoj.movieapp.api.RetrofitClient
 import com.civonavoj.movieapp.api.TmdbApi
+import com.civonavoj.movieapp.viewmodel.ApiError
+import com.civonavoj.movieapp.viewmodel.mapToMovieItem
+import com.civonavoj.movieapp.viewmodel.MovieListUiState
+import com.civonavoj.movieapp.viewmodel.MovieListViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -19,8 +23,8 @@ import org.junit.Test
 import retrofit2.Response
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class MovieViewModelTest {
-    private lateinit var viewModel: MovieViewModel
+class MovieListViewModelTest {
+    private lateinit var viewModel: MovieListViewModel
     private lateinit var api: TmdbApi
     private val testDispatcher = StandardTestDispatcher()
 
@@ -29,7 +33,7 @@ class MovieViewModelTest {
         Dispatchers.setMain(testDispatcher)
         api = mockk()
         RetrofitClient.setApiForTesting(api)
-        viewModel = MovieViewModel()
+        viewModel = MovieListViewModel()
     }
 
     @After
@@ -49,17 +53,17 @@ class MovieViewModelTest {
                 voteAverage = 8.5
             )
         )
-        val response = MovieResponse(1, movies)
+        val response = MoviesListApiResponse(1, movies)
 
         coEvery { api.getPopularMovies() } returns Response.success(response)
 
         viewModel.uiState.test {
-            assert(awaitItem() is MovieUiState.Loading) {
+            assert(awaitItem() is MovieListUiState.Loading) {
                 "Initial state should be Loading"
             }
             viewModel.fetchPopularMovies()
-            val successState = awaitItem() as MovieUiState.Success
-            assert(successState.movies == movies) {
+            val successState = awaitItem() as MovieListUiState.Success
+            assert(successState.movies.containsAll(movies.map { it.mapToMovieItem() })) {
                 "Expected movies list to match the mock data"
             }
         }
@@ -69,12 +73,12 @@ class MovieViewModelTest {
     fun fetchPopularMovies_error() = runTest {
         coEvery { api.getPopularMovies() } throws Exception("Network error")
         viewModel.uiState.test {
-            assert(awaitItem() is MovieUiState.Loading) {
+            assert(awaitItem() is MovieListUiState.Loading) {
                 "Initial state should be Loading"
             }
             viewModel.fetchPopularMovies()
-            val errorState = awaitItem() as MovieUiState.Error
-            assert(errorState.message == "Network error") {
+            val failure = awaitItem() as MovieListUiState.Failed
+            assert(failure.error is ApiError.Network) {
                 "Error message should match the exception message"
             }
         }

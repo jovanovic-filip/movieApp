@@ -1,4 +1,4 @@
-package com.civonavoj.movieapp
+package com.civonavoj.movieapp.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
