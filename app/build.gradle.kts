@@ -91,4 +91,8 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp3)
     implementation(libs.okhttp3.logging)
+
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.common.android)
+    implementation(libs.androidx.paging.runtime.ktx)
 }

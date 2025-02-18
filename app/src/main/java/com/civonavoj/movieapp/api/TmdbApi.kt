@@ -8,12 +8,17 @@ import retrofit2.http.Query
 interface TmdbApi {
 
     @GET("movie/popular")
-    suspend fun getPopularMovies(): Response<MoviesListApiResponse>
+    suspend fun getPopularMovies(
+        @Query("page") page: Int
+    ): Response<MoviesListApiResponse>
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(@Path("movie_id") movieId: Int): Response<Movie>
 
     @GET("search/movie")
-    suspend fun searchMoviesByKeyword(@Query("query") query: String): Response<MoviesListApiResponse>
+    suspend fun searchMoviesByKeyword(
+        @Query("query") query: String,
+        @Query("page") page: Int
+    ): Response<MoviesListApiResponse>
 
 }

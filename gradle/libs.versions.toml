@@ -7,6 +7,8 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 activity = "1.10.0"
+
+pagingRuntimeKtx = "3.3.6"
 storage = "1.5.0"
 material = "1.12.0"
 coil = "2.1.0"
@@ -22,6 +24,7 @@ okhttp = "4.12.0"
 coroutines-test = "1.7.3"
 mockk = "1.13.8"
 turbine = "1.0.0"
+paging = "3.3.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,6 +56,10 @@ okhttp3-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor"
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines-test" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+
+androidx-paging-common-android = { group = "androidx.paging", name = "paging-common-android", version.ref = "paging" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
+androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
