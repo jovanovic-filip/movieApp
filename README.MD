@@ -8,10 +8,13 @@ A modern Android application that displays movie information using the TMDB (The
 - **UI Framework:** Jetpack Compose
 - **Networking:** Retrofit, OkHttp
 - **Build System:** Gradle (Kotlin DSL)
-- **Architecture:** Clean Architecture with MVVM
 - **Testing:** JUnit, MockK, Turbine
 
-## Project Setup
+## TODO
+
+- ** [ ] Add more unit tests
+- ** [ ] Add more UI tests
+- ** [ ] Add pagination support
 
 ### Prerequisites
 
