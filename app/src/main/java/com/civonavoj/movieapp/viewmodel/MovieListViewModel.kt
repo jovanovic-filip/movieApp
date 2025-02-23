@@ -11,8 +11,9 @@ import com.civonavoj.movieapp.api.SearchPagingSource
 import com.civonavoj.movieapp.api.TmdbApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import androidx.paging.PagingData
 
 class MovieListViewModel(
     private val api: TmdbApi = RetrofitClient.api
@@ -32,7 +33,7 @@ class MovieListViewModel(
     @OptIn(ExperimentalCoroutinesApi::class)
     val searchResults = currentSearchQuery.flatMapLatest { query ->
         when {
-            query.isEmpty() -> emptyFlow()
+            query.isEmpty() -> flowOf(PagingData.empty())
             else -> Pager(
                 config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
                 pagingSourceFactory = { SearchPagingSource(api, query) }

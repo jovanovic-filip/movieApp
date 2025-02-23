@@ -39,10 +39,3 @@ sealed class DetailsUiState {
     data class Success(val movie: MovieDetails) : DetailsUiState()
     data class Failed(val error: ApiError?) : DetailsUiState()
 }
-
-sealed class MovieListUiState {
-    data object Empty : MovieListUiState()
-    data object Loading : MovieListUiState()
-    data class Success(val movies: List<MovieDetails>) : MovieListUiState()
-    data class Failed(val error: ApiError?) : MovieListUiState()
-}

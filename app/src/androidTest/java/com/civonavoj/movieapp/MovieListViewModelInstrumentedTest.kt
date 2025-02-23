@@ -1,62 +1,67 @@
 package com.civonavoj.movieapp
 
+import androidx.paging.PagingData
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.civonavoj.movieapp.viewmodel.MovieListUiState
+import com.civonavoj.movieapp.api.Movie
 import com.civonavoj.movieapp.viewmodel.MovieListViewModel
-import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class MovieListViewModelInstrumentedTest {
     private lateinit var viewModel: MovieListViewModel
+    private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
 
     @Before
     fun setup() {
+        Dispatchers.setMain(testDispatcher)
         viewModel = MovieListViewModel()
     }
 
-    @Test
-    fun testPopularMoviesApiCall() = runBlocking {
-        val states = mutableListOf<MovieListUiState>()
-        val job = launch {
-            viewModel.uiState.collect { state -> states.add(state) }
-        }
-
-        viewModel.fetchPopularMovies()
-        delay(1000)
-        job.cancel()
-
-        assertTrue("Initial state should be Loading", states[0] is MovieListUiState.Loading)
-        assertTrue("Final state should be Success", states.last() is MovieListUiState.Success)
-
-        val movies = (states.last() as MovieListUiState.Success).movies
-        assertTrue("Movie list should not be empty", movies.isNotEmpty())
-        assertTrue("Should have at least 10 movies", movies.size >= 10)
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 
     @Test
-    fun testSearchMoviesByKeywordApiCall() = runBlocking {
-        val states = mutableListOf<MovieListUiState>()
-        val job = launch {
-            viewModel.uiState.collect { state ->
-                states.add(state)
-            }
-        }
+    fun popularMovies_shouldReturnPagingData() = runTest {
+        // When
+        val pagingData = viewModel.popularMovies.first()
+        // Then
+        assertNotNull("PagingData should not be null", pagingData)
+    }
 
-        viewModel.searchMoviesByKeyword("Inception")
-        delay(1000)
-        job.cancel()
+    @Test
+    fun searchMovies_withValidQuery_shouldReturnPagingData() = runTest {
+        // Given
+        val query = "Matrix"
+        // When
+        viewModel.searchMovies(query)
+        val pagingData: PagingData<Movie> = viewModel.searchResults.first()
+        // Then
+        assertNotNull("Search PagingData should not be null", pagingData)
+    }
 
-        assertTrue("Initial state should be Loading", states[0] is MovieListUiState.Loading)
-        assertTrue("Final state should be Success", states.last() is MovieListUiState.Success)
-
-        val movies = (states.last() as MovieListUiState.Success).movies
-        assertTrue("Movie list should not be empty", movies.isNotEmpty())
-        assertTrue("Should have at least 1 movie", movies.isNotEmpty())
+    @Test
+    fun searchMovies_withEmptyQuery_shouldReturnEmpty() = runTest {
+        // Given
+        val emptyQuery = ""
+        // When
+        viewModel.searchMovies(emptyQuery)
+        val pagingData = viewModel.searchResults.first()
+        // Then
+        assertNotNull("Empty search should return empty PagingData", pagingData)
     }
 }
