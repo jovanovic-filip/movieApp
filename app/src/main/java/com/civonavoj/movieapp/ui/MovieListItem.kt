@@ -95,7 +95,9 @@ fun PreviewMovieListItem() {
             releaseDate = "2022-01-01",
             posterPath = "",
             overview = "Movie overview",
-            voteAverage = 7.5
+            voteAverage = 7.5,
+            runtime = 125,
+            language = "English"
         ),
         onMovieClick = {}
     )

@@ -79,7 +79,13 @@ fun MovieDetailsContent(uiState: DetailsUiState, navController: NavController) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Rating: ${movie.rating}", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Runtime: ${movie.runtime} minutes", style = MaterialTheme.typography.bodyMedium)
+                val runtimeHours = "${movie.runtime / 60}h"
+                val minutes = movie.runtime % 60
+                val runtimeMinutes = if(minutes > 0)  " ${minutes}m" else ""
+                Text(
+                    text = "Runtime: $runtimeHours$runtimeMinutes",
+                    style = MaterialTheme.typography.bodyMedium
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Language: ${movie.language}", style = MaterialTheme.typography.bodyMedium)
             }
@@ -103,7 +109,7 @@ fun PreviewMovieDetailsScreen() {
                 overview = "This is a sample movie overview.",
                 genres = listOf("Action", "Adventure"),
                 rating = 4.5,
-                runtime = 120,
+                runtime = 12,
                 language = "English"
             )
         ),

@@ -1,6 +1,7 @@
 package com.civonavoj.movieapp.viewmodel
 
 import com.civonavoj.movieapp.api.Movie
+import java.util.Locale
 
 data class MovieDetails(
     val id: Int,
@@ -23,9 +24,13 @@ fun Movie.mapToMovieDetails(): MovieDetails {
         rating = voteAverage ?: 0.0,
         overview = overview ?: "",
         genres = emptyList(),
-        runtime = 0,
-        language = ""
+        runtime = runtime ?: 0,
+        language = mapLanguageCodeToName(language) ?: ""
     )
+}
+
+fun mapLanguageCodeToName(languageCode: String?): String? {
+    return languageCode?.let { Locale(languageCode).displayLanguage }
 }
 
 sealed class ApiError {
