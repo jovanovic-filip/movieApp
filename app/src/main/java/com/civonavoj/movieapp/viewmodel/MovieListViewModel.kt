@@ -18,26 +18,23 @@ class MovieListViewModel(
     private val api: TmdbApi = RetrofitClient.api
 ) : ViewModel() {
 
+    companion object {
+        private const val PAGE_SIZE = 20
+    }
+
     private var currentSearchQuery = MutableStateFlow("")
 
     val popularMovies = Pager(
-        config = PagingConfig(
-            pageSize = 20,
-            enablePlaceholders = false
-        ),
+        config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
         pagingSourceFactory = { MoviePagingSource(api) }
     ).flow.cachedIn(viewModelScope)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val searchResults = currentSearchQuery.flatMapLatest { query ->
-        if (query.isEmpty()) {
-            emptyFlow()
-        } else {
-            Pager(
-                config = PagingConfig(
-                    pageSize = 20,
-                    enablePlaceholders = false
-                ),
+        when {
+            query.isEmpty() -> emptyFlow()
+            else -> Pager(
+                config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
                 pagingSourceFactory = { SearchPagingSource(api, query) }
             ).flow
         }
