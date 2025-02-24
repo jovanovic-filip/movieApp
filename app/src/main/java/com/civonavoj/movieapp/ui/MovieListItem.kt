@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.civonavoj.movieapp.BuildConfig.TMDB_IMAGE_BASE_URL
 import com.civonavoj.movieapp.R
 
 const val MAX_RATING = 10
@@ -50,7 +51,7 @@ fun MovieListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = "https://image.tmdb.org/t/p/w92${movie.posterPath}",
+                model = "${TMDB_IMAGE_BASE_URL}w92${movie.posterPath}",
                 contentDescription = movie.title,
                 modifier = Modifier
                     .size(64.dp)
