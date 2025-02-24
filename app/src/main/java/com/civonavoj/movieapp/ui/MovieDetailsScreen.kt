@@ -40,7 +40,10 @@ fun MovieDetailsScreen(
 fun MovieDetailsContent(uiState: DetailsUiState, navController: NavController) {
     when (uiState) {
         is DetailsUiState.Loading -> {
-            Text(text = stringResource(R.string.loading), style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = stringResource(R.string.loading),
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
         is DetailsUiState.Success -> {
             val movie = uiState.movie
@@ -62,11 +65,14 @@ fun MovieDetailsContent(uiState: DetailsUiState, navController: NavController) {
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = stringResource(R.string.release_date, movie.releaseDate), style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = stringResource(R.string.release_date, movie.releaseDate),
+                    style = MaterialTheme.typography.bodyMedium
+                )
                 Spacer(modifier = Modifier.height(16.dp))
+                val imageUrl = "${BuildConfig.TMDB_IMAGE_BASE_URL}w500${movie.posterUrl}"
                 Image(
-                    painter = rememberAsyncImagePainter(
-                        "${BuildConfig.TMDB_IMAGE_BASE_URL}w500${movie.posterUrl}"),
+                    painter = rememberAsyncImagePainter(imageUrl),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -74,12 +80,24 @@ fun MovieDetailsContent(uiState: DetailsUiState, navController: NavController) {
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = stringResource(R.string.overview), style = MaterialTheme.typography.headlineSmall)
-                Text(text = movie.overview, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = stringResource(R.string.overview),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+                Text(
+                    text = movie.overview,
+                    style = MaterialTheme.typography.bodyMedium
+                )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = stringResource(R.string.genres, movie.genres.joinToString(", ")), style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = stringResource(R.string.genres, movie.genres.joinToString(", ")),
+                    style = MaterialTheme.typography.bodyMedium
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = stringResource(R.string.rating, movie.rating), style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = stringResource(R.string.rating, movie.rating),
+                    style = MaterialTheme.typography.bodyMedium
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 val runtimeHours = "${movie.runtime / 60}h"
                 val minutes = movie.runtime % 60
@@ -89,11 +107,17 @@ fun MovieDetailsContent(uiState: DetailsUiState, navController: NavController) {
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = stringResource(R.string.language, movie.language), style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = stringResource(R.string.language, movie.language),
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
         is DetailsUiState.Failed -> {
-            Text(text = stringResource(R.string.error_loading_details), color = MaterialTheme.colorScheme.error)
+            Text(
+                text = stringResource(R.string.error_loading_details),
+                color = MaterialTheme.colorScheme.error
+            )
         }
     }
 }
