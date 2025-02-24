@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -17,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.civonavoj.movieapp.R
 import com.civonavoj.movieapp.viewmodel.MovieListViewModel
 
 @Composable
@@ -47,7 +49,7 @@ fun MoviesListScreen(
                         query = it
                         viewModel.searchMovies(query)
                     },
-                    label = { Text("Search") },
+                    label = { Text(stringResource(R.string.error_loading_details)) },
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
                         IconButton(
@@ -59,7 +61,7 @@ fun MoviesListScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = "Clear search"
+                                contentDescription = stringResource(R.string.clear_search)
                             )
                         }
                     }
@@ -71,7 +73,7 @@ fun MoviesListScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "Search"
+                        contentDescription = stringResource(R.string.search)
                     )
                 }
             }
@@ -83,7 +85,7 @@ fun MoviesListScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Error loading movies. Please try again.")
+                    Text(stringResource(R.string.error_loading_movies))
                 }
             }
 
@@ -98,7 +100,10 @@ fun MoviesListScreen(
 
             else -> {
                 Text(
-                    text = if (query.isEmpty()) "Top Movies" else "Search Results",
+                    text = when {
+                        query.isEmpty() -> stringResource(R.string.top_movies)
+                        else -> stringResource(R.string.search_results)
+                    },
                     style = MaterialTheme.typography.headlineLarge,
                     modifier = Modifier.padding(8.dp)
                 )
@@ -122,7 +127,7 @@ fun MoviesListScreen(
                         is LoadState.Loading -> item { LoadingItem() }
                         is LoadState.Error -> item {
                             Text(
-                                "Error loading more items",
+                                stringResource(R.string.error_loading_more),
                                 modifier = Modifier.padding(16.dp)
                             )
                         }

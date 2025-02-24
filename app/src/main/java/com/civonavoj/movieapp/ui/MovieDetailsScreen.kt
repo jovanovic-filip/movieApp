@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -19,6 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.civonavoj.movieapp.BuildConfig
+import com.civonavoj.movieapp.R
 import com.civonavoj.movieapp.viewmodel.DetailsUiState
 import com.civonavoj.movieapp.viewmodel.MovieDetails
 import com.civonavoj.movieapp.viewmodel.MovieDetailsViewModel
@@ -38,7 +40,7 @@ fun MovieDetailsScreen(
 fun MovieDetailsContent(uiState: DetailsUiState, navController: NavController) {
     when (uiState) {
         is DetailsUiState.Loading -> {
-            Text(text = "Loading...", style = MaterialTheme.typography.bodyLarge)
+            Text(text = stringResource(R.string.loading), style = MaterialTheme.typography.bodyLarge)
         }
         is DetailsUiState.Success -> {
             val movie = uiState.movie
@@ -50,7 +52,7 @@ fun MovieDetailsContent(uiState: DetailsUiState, navController: NavController) {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                     Text(
@@ -60,7 +62,7 @@ fun MovieDetailsContent(uiState: DetailsUiState, navController: NavController) {
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Release Date: ${movie.releaseDate}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = stringResource(R.string.release_date, movie.releaseDate), style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(16.dp))
                 Image(
                     painter = rememberAsyncImagePainter(
@@ -72,26 +74,26 @@ fun MovieDetailsContent(uiState: DetailsUiState, navController: NavController) {
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Overview", style = MaterialTheme.typography.headlineSmall)
+                Text(text = stringResource(R.string.overview), style = MaterialTheme.typography.headlineSmall)
                 Text(text = movie.overview, style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Genres: ${movie.genres.joinToString(", ")}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = stringResource(R.string.genres, movie.genres.joinToString(", ")), style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Rating: ${movie.rating}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = stringResource(R.string.rating, movie.rating), style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(8.dp))
                 val runtimeHours = "${movie.runtime / 60}h"
                 val minutes = movie.runtime % 60
                 val runtimeMinutes = if(minutes > 0)  " ${minutes}m" else ""
                 Text(
-                    text = "Runtime: $runtimeHours$runtimeMinutes",
+                    text = stringResource(R.string.runtime, "$runtimeHours$runtimeMinutes"),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Language: ${movie.language}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = stringResource(R.string.language, movie.language), style = MaterialTheme.typography.bodyMedium)
             }
         }
         is DetailsUiState.Failed -> {
-            Text(text = "Failed to load movie details", color = MaterialTheme.colorScheme.error)
+            Text(text = stringResource(R.string.error_loading_details), color = MaterialTheme.colorScheme.error)
         }
     }
 }
