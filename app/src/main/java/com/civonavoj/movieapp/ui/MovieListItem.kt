@@ -22,9 +22,15 @@ import coil.compose.AsyncImage
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.civonavoj.movieapp.R
+
+const val MAX_RATING = 10
 
 @Composable
 fun MovieListItem(
@@ -68,6 +74,20 @@ fun MovieListItem(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                Row {
+                    repeat(MAX_RATING) { index ->
+                        Icon(
+                            imageVector = ImageVector.vectorResource(
+                                id = when {
+                                    index < (movie.voteAverage?.toInt() ?: 0) -> R.drawable.ic_star_filled
+                                    else -> R.drawable.ic_star_outline
+                                }
+                            ),
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                }
             }
         }
     }
