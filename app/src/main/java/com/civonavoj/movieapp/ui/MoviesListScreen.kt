@@ -49,7 +49,7 @@ fun MoviesListScreen(
                         query = it
                         viewModel.searchMovies(query)
                     },
-                    label = { Text(stringResource(R.string.error_loading_details)) },
+                    label = { Text(stringResource(R.string.search)) },
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
                         IconButton(
