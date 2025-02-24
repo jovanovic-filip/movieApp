@@ -14,7 +14,6 @@ A modern Android application that displays movie information using the TMDB (The
 
 - ** [ ] Add more unit tests
 - ** [ ] Add more UI tests
-- ** [ ] Add pagination support
 
 ### Prerequisites
 
