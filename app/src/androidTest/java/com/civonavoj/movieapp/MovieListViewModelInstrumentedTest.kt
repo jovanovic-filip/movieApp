@@ -1,6 +1,7 @@
 package com.civonavoj.movieapp
 
 import androidx.paging.PagingData
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.civonavoj.movieapp.api.Movie
 import com.civonavoj.movieapp.viewmodel.MovieListViewModel
@@ -23,6 +24,7 @@ import org.junit.runner.RunWith
 class MovieListViewModelInstrumentedTest {
     private lateinit var viewModel: MovieListViewModel
     private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
+    private val context = ApplicationProvider.getApplicationContext<android.content.Context>()
 
     @Before
     fun setup() {
@@ -48,7 +50,7 @@ class MovieListViewModelInstrumentedTest {
         // Given
         val query = "Matrix"
         // When
-        viewModel.searchMovies(query)
+        viewModel.searchMovies(query, context)
         val pagingData: PagingData<Movie> = viewModel.searchResults.first()
         // Then
         assertNotNull("Search PagingData should not be null", pagingData)
@@ -59,7 +61,7 @@ class MovieListViewModelInstrumentedTest {
         // Given
         val emptyQuery = ""
         // When
-        viewModel.searchMovies(emptyQuery)
+        viewModel.searchMovies(emptyQuery, context)
         val pagingData = viewModel.searchResults.first()
         // Then
         assertNotNull("Empty search should return empty PagingData", pagingData)
