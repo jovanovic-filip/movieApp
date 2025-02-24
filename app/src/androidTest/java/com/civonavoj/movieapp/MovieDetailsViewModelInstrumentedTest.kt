@@ -12,6 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
 @RunWith(AndroidJUnit4::class)
 class MovieDetailsViewModelInstrumentedTest {
     private lateinit var viewModel: MovieDetailsViewModel
@@ -23,32 +24,24 @@ class MovieDetailsViewModelInstrumentedTest {
 
     @Test
     fun fetchMovieDetails_shouldEmitLoadingThenSuccess() = runTest {
-        // Given
-        val movieId = 27205
-        
         // When
+        viewModel.fetchMovieDetails(27205)
         val states = viewModel.uiState.take(2).toList()
-        viewModel.fetchMovieDetails(movieId)
-
         // Then
-        assertTrue("First state should be Loading", states[0] is DetailsUiState.Loading)
-        assertTrue("Second state should be Success", states[1] is DetailsUiState.Success)
-        
+        assertTrue(states[0] is DetailsUiState.Loading)
+        assertTrue(states[1] is DetailsUiState.Success)
+
         val successState = states[1] as DetailsUiState.Success
-        assertEquals("Movie ID should match", movieId, successState.movie.id)
+        assertEquals(27205, successState.movie.id)
     }
 
     @Test
-    fun fetchMovieDetails_withInvalidId_shouldEmitLoadingThenError() = runTest {
-        // Given
-        val invalidMovieId = -1
-        
+    fun fetchMovieDetails_shouldEmitErrorOnFailure() = runTest {
         // When
+        viewModel.fetchMovieDetails(-1) // Invalid ID to trigger error
         val states = viewModel.uiState.take(2).toList()
-        viewModel.fetchMovieDetails(invalidMovieId)
-
         // Then
-        assertTrue("First state should be Loading", states[0] is DetailsUiState.Loading)
-        assertTrue("Second state should be Failed", states[1] is DetailsUiState.Failed)
+        assertTrue(states[0] is DetailsUiState.Loading)
+        assertTrue(states[1] is DetailsUiState.Failed)
     }
 }

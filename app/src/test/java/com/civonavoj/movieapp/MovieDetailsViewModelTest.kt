@@ -21,6 +21,17 @@ import org.junit.Before
 import org.junit.Test
 import retrofit2.Response
 
+val TEST_MOVIE = Movie(
+    id = 1,
+    title = "Test Movie",
+    overview = "Overview",
+    posterPath = "poster_path",
+    releaseDate = "2024-01-01",
+    voteAverage = 8.5,
+    runtime = 123,
+    language = "en"
+)
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class MovieDetailsViewModelTest {
     private lateinit var viewModel: MovieDetailsViewModel
@@ -42,16 +53,9 @@ class MovieDetailsViewModelTest {
 
     @Test
     fun fetchMovieDetails_success() = runTest {
-        val movie = Movie(
-            id = 1,
-            title = "Test Movie",
-            overview = "Overview",
-            posterPath = "poster_path",
-            releaseDate = "2024-01-01",
-            voteAverage = 8.5
-        )
 
-        coEvery { api.getMovieDetails(1) } returns Response.success(movie)
+
+        coEvery { api.getMovieDetails(1) } returns Response.success(TEST_MOVIE)
 
         viewModel.uiState.test {
             assert(awaitItem() is DetailsUiState.Loading) {
@@ -59,7 +63,7 @@ class MovieDetailsViewModelTest {
             }
             viewModel.fetchMovieDetails(1)
             val successState = awaitItem() as DetailsUiState.Success
-            assert(successState.movie == movie.mapToMovieDetails()) {
+            assert(successState.movie == TEST_MOVIE.mapToMovieDetails()) {
                 "Expected movie details to match the mock data"
             }
         }

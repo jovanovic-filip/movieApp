@@ -45,7 +45,9 @@ class MoviePagingSourcesTest {
             overview = "Overview",
             posterPath = "poster_path",
             releaseDate = "2024-01-01",
-            voteAverage = 8.5
+            voteAverage = 8.5,
+            runtime = 123,
+            language = "en"
         )
         val response = MoviesListApiResponse(
             page = 1,
@@ -75,18 +77,9 @@ class MoviePagingSourcesTest {
 
     @Test
     fun `test if search paging source load is successful`() = runTest {
-        val testMovie = Movie(
-            id = 1,
-            title = "Test Movie",
-            overview = "Overview",
-            posterPath = "poster_path",
-            releaseDate = "2024-01-01",
-            voteAverage = 8.5
-        )
-
         val response = MoviesListApiResponse(
             page = 1,
-            results = listOf(testMovie)
+            results = listOf(TEST_MOVIE)
         )
 
         coEvery {
@@ -105,7 +98,7 @@ class MoviePagingSourcesTest {
 
         assertTrue(loadResult is PagingSource.LoadResult.Page)
         loadResult as PagingSource.LoadResult.Page
-        assertEquals(listOf(testMovie), loadResult.data)
+        assertEquals(listOf(TEST_MOVIE), loadResult.data)
         assertEquals(null, loadResult.prevKey)
         assertEquals(2, loadResult.nextKey)
     }
