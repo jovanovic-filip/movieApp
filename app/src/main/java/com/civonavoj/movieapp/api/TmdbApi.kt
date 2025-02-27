@@ -10,6 +10,9 @@ interface TmdbApi {
     @GET("movie/popular")
     suspend fun getPopularMovies(): Response<MoviesListApiResponse>
 
+    @GET("movie/top_rated")
+    suspend fun getTopRatedMovies(): Response<MoviesListApiResponse>
+
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(@Path("movie_id") movieId: Int): Response<Movie>
 

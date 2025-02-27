@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -38,8 +39,13 @@ fun MoviesListScreen(
     var isSearchExpanded by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchPopularMovies()
+    var isTopRatedOrPopular by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isTopRatedOrPopular) {
+        when(isTopRatedOrPopular) {
+            false -> viewModel.fetchPopularMovies()
+            else -> viewModel.fetchTopRatedMovies()
+        }
     }
 
     Column {
@@ -85,12 +91,31 @@ fun MoviesListScreen(
                 }
             }
         }
-
-        Text(
-            text = if (query.isEmpty()) "Top Movies" else "Search Results",
-            style = MaterialTheme.typography.headlineLarge,
-            modifier = Modifier.padding(8.dp)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text(
+                text = when {
+                    query.isEmpty() -> when (isTopRatedOrPopular) {
+                        true -> "Top Movies"
+                        false -> "Popular Movies"
+                    }
+                    else -> "Search Results"
+                },
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier.padding(8.dp)
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            IconButton(
+                onClick = { isTopRatedOrPopular = isTopRatedOrPopular.not() },
+                modifier = Modifier.align(Alignment.CenterVertically)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = "Toggle popular or top rated movies"
+                )
+            }
+        }
 
 
         when (uiState) {

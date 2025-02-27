@@ -37,6 +37,10 @@ class MovieListViewModel : ViewModel() {
         }
     }
 
+    fun fetchTopRatedMovies() = viewModelScope.launch {
+        handleApiResponse(RetrofitClient.api.getTopRatedMovies())
+    }
+
     fun fetchPopularMovies() = viewModelScope.launch {
         handleApiResponse(RetrofitClient.api.getPopularMovies())
     }
